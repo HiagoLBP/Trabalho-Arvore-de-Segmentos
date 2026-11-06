@@ -1,0 +1,14 @@
+# Binarios compilados
+*.exe
+*.o
+*.out
+programa
+programa.exe
+
+# Pastas de IDE e compressores
+.vscode/
+*.zip
+
+# Arquivos de log e temporarios
+*.log
+*.tmp

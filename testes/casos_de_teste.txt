@@ -1,0 +1,151 @@
+================================================================================
+INSTITUTO FEDERAL BAIANO - CAMPUS GUANAMBI
+CURSO SUPERIOR DE TECNOLOGIA EM ADS - DISCIPLINA: ESTRUTURA DE DADOS
+PROFESSOR: REINALDO COTRIM
+TRABALHO AVALIATIVO: ESTRUTURAS DE ARVORES
+TEMA: ARVORE DE SEGMENTOS (SEGMENT TREE PARA SOMA DE INTERVALOS)
+================================================================================
+
+INTEGRANTES DA EQUIPE:
+- Hiago Souza (HiagoLBP)
+- Vinicius Benevides Reis (Vini-Be)
+
+--------------------------------------------------------------------------------
+CASOS DE TESTE OBRIGATORIOS E COMPROVATORIOS
+--------------------------------------------------------------------------------
+
+COMO REPRODUZIR:
+1. Compile e execute o programa:
+   gcc -Wall -Wextra -std=c99 codigo/main.c codigo/segtree.c -o programa
+   ./programa (ou programa.exe no Windows)
+
+2. Voce pode reproduzir todos os 4 testes obrigatorios automaticamente
+   escolhendo a opcao [6] no menu principal, ou reproduzir manualmente
+   passo a passo atraves das opcoes [1], [2], [3] e [4] do menu.
+
+================================================================================
+CASO DE TESTE 1: CONSTRUCAO DA ARVORE DE SEGMENTOS (TESTE OBRIGATORIO 1)
+================================================================================
+Objetivo:
+Construir a Arvore de Segmentos a partir do vetor informado, verificar a
+representacao em vetor da arvore e demonstrar que a raiz armazena a soma total.
+
+Passos para reproducao manual:
+- Escolha a opcao [1] no menu.
+- Informe a quantidade N = 6.
+- Digite os valores: 1 3 5 7 9 11
+- Escolha a opcao [4] no menu para exibir o estado da arvore.
+
+Entrada:
+- Quantidade: 6
+- Elementos: [1, 3, 5, 7, 9, 11]
+
+Resultado Esperado:
+- Vetor Original: [0]: 1   [1]: 3   [2]: 5   [3]: 7   [4]: 9   [5]: 11
+- Raiz da Arvore (No 1): 36
+- Calculo manual: 1 + 3 + 5 + 7 + 9 + 11 = 36
+- Representacao em vetor da arvore com todos os nos preenchidos corretamente:
+  No 1 = 36 (faixa [0..5])
+  No 2 = 9  (faixa [0..2] -> 1 + 3 + 5)
+  No 3 = 27 (faixa [3..5] -> 7 + 9 + 11)
+  No 4 = 4  (faixa [0..1] -> 1 + 3)
+  No 5 = 5  (folha indice 2)
+  No 6 = 16 (faixa [3..4] -> 7 + 9)
+  No 7 = 11 (folha indice 5)
+  No 8 = 1  (folha indice 0)
+  No 9 = 3  (folha indice 1)
+  No 12 = 7 (folha indice 3)
+  No 13 = 9 (folha indice 4)
+
+Status: APROVADO COM EXITO.
+
+================================================================================
+CASO DE TESTE 2: CONSULTA DE INTERVALO - RANGE SUM QUERY (TESTE OBRIGATORIO 2)
+================================================================================
+Objetivo:
+Consultar a soma dos elementos contidos no intervalo de indices [1, 3] e
+apresentar o resultado obtido pela Arvore de Segmentos em tempo O(log N).
+
+Passos para reproducao manual:
+- Com a arvore construida no Teste 1, escolha a opcao [2] no menu.
+- Informe o indice inicial L: 1
+- Informe o indice final R: 3
+
+Entrada:
+- L = 1
+- R = 3
+
+Resultado Esperado:
+- Soma retornada: 15
+- Calculo manual correspondente: vetor[1] + vetor[2] + vetor[3] = 3 + 5 + 7 = 15
+
+Status: APROVADO COM EXITO.
+
+================================================================================
+CASO DE TESTE 3: ATUALIZACAO PONTUAL - POINT UPDATE (TESTE OBRIGATORIO 3)
+================================================================================
+Objetivo:
+Atualizar o valor do elemento no indice 2 (alterando de 5 para 10) e demonstrar
+a propagacao da atualizacao nos nos ancestrais ate a raiz.
+
+Passos para reproducao manual:
+- Escolha a opcao [3] no menu.
+- Informe o indice a ser alterado: 2
+- Informe o novo valor: 10
+- Escolha a opcao [4] para exibir o novo estado da arvore.
+
+Entrada:
+- Indice: 2
+- Novo Valor: 10 (valor anterior era 5)
+
+Resultado Esperado:
+- Mensagem de sucesso: Indice [2] atualizado: 5 -> 10
+- Propagacao: a diferenca (+5) sobe pelos pais:
+  No 5 (folha) passa de 5 para 10
+  No 2 passa de 9 para 14
+  No 1 (raiz) passa de 36 para 41
+- Nova Raiz da Arvore: 41
+- Calculo manual da nova soma total: 1 + 3 + 10 + 7 + 9 + 11 = 41
+
+Status: APROVADO COM EXITO.
+
+================================================================================
+CASO DE TESTE 4: CONSULTA POS-ATUALIZACAO (TESTE OBRIGATORIO 4)
+================================================================================
+Objetivo:
+Executar novamente a consulta no intervalo de indices [1, 3] apos a atualizacao
+do indice 2 para demonstrar que a arvore reflete os novos dados dinamicamente.
+
+Passos para reproducao manual:
+- Escolha a opcao [2] no menu.
+- Informe o indice inicial L: 1
+- Informe o indice final R: 3
+
+Entrada:
+- L = 1
+- R = 3
+
+Resultado Esperado:
+- Soma retornada: 20
+- Calculo manual correspondente: vetor[1] + vetor[2] + vetor[3] = 3 + 10 + 7 = 20
+
+Status: APROVADO COM EXITO.
+
+================================================================================
+CASOS DE TESTE COMPLEMENTARES (TRATAMENTO DE BORDAS E DADOS INVALIDOS)
+================================================================================
+
+CASO 5: CONSULTA EM ELEMENTO UNICO [L == R]
+- Entrada: L = 4, R = 4
+- Resultado Esperado: Retorna o proprio valor do vetor[4] = 9.
+
+CASO 6: CONSULTA EM INTERVALO FORA DOS LIMITES
+- Entrada: L = -1, R = 4 (ou L = 2, R = 10 com N = 6)
+- Resultado Esperado: Mensagem amigavel de erro de intervalo invalido sem
+  provocar falha de segmentacao ou travamento.
+
+CASO 7: ATUALIZACAO EM INDICE INEXISTENTE
+- Entrada: Indice = 15, Novo Valor = 50
+- Resultado Esperado: Mensagem de erro informando que o indice esta fora
+  dos limites validos [0, N-1].
+================================================================================
